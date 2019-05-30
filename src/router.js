@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import Exercise from './views/Exercise.vue'
+import Exercise from '@/views/Exercise.vue'
+import Workout from '@/views/Workout.vue'
 
 Vue.use(Router)
 
@@ -26,6 +27,11 @@ export default new Router({
       path: '/exercises',
       name: 'exercises',
       component: Exercise
+    },
+    {
+      path: '/workouts',
+      name: 'workouts',
+      component: Workout
     }
   ]
 })
