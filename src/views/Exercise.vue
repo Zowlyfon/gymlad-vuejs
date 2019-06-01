@@ -1,7 +1,9 @@
 <template>
   <div id="app">
-    <b-list-group v-for="exercise in exercises" :key="exercise.id"><Exercise :exerciseId="exercise.id" :exerciseName="exercise.name"></Exercise></b-list-group>
-    
+    <b-container>
+      <p><b-button @click="addWorkout">New Workout</b-button></p>
+      <b-list-group v-for="exercise in exercises" :key="exercise.id"><p><Exercise :exerciseId="exercise.id" :exerciseName="exercise.name"></Exercise></p></b-list-group>
+    </b-container>
   </div>
 </template>
 
@@ -25,6 +27,9 @@ export default {
       this.api.get('/exercise')
         .then(response => (this.exercises = response.data))
         .catch(error => (this.console.error(error)));
+    },
+    addWorkout: function () {
+      this.exercises.push({id: 0, name: ""});
     }
   },
   created() {

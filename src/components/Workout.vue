@@ -1,3 +1,3 @@
 <script>
-import API from '@mixins/API.vue'
+//import API from '@/mixins/API.vue'
 </script>

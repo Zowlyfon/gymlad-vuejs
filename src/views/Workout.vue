@@ -5,12 +5,12 @@
 </template>
 
 <script>
-import Workout from '@components/Workout.vue'
+import Workout from '@/components/Workout.vue'
 
 export default {
     name: 'workout',
     components: {
-        Exercise
+        Workout
     }
 }
 </script>

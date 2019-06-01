@@ -1,5 +1,14 @@
 <template>
-    <div class="Exercise"><b-form-input v-model="exercise.name" @change="onChange"></b-form-input> <b-button v-show="isNew" @click="postExercise">Add</b-button> <b-button v-show="!isNew && changed" @click="putExercise">Update</b-button></div>
+    <div class="Exercise">
+        <b-input-group v-show="exists">
+            <b-form-input v-model="exercise.name" @change="onChange"></b-form-input> 
+            <b-input-group-append>
+                <b-button v-show="isNew" @click="postExercise">Add</b-button> 
+                <b-button v-show="!isNew && changed" @click="putExercise">Update</b-button>
+                <b-button v-show="!isNew" @click="deleteExercise" variant="danger">Delete</b-button>
+            </b-input-group-append>
+        </b-input-group>
+    </div>
 </template>
 
 <script>
@@ -14,7 +23,8 @@ export default {
                 id: null,
                 name: ''
             },
-            changed: false
+            changed: false,
+            exists: true
         }
     },
     props: {
@@ -54,6 +64,12 @@ export default {
                 name: this.exercise.name
             })
             .then(this.changed = false)
+            .catch(error => (this.console.error(error)));
+        },
+        deleteExercise: function() {
+            this.api.delete('/exercise/' + this.exercise.id, {
+            })
+            .then(this.exists = false)
             .catch(error => (this.console.error(error)));
         }
     },
