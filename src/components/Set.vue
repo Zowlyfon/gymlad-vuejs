@@ -31,7 +31,6 @@ export default {
         }
     },
     props: {
-        setId: Int,
         exerciseId: Int,
         workoutId: Int
     },
@@ -59,6 +58,11 @@ export default {
             .then(this.changed = false)
             .catch(error => (this.console.error(error)));
         }
+    },
+    created() {
+        this.set.exerciseId = exerciseId;
+        this.set.workoutId = workoutId;
+        postSet();
     }
 }
 </script>
