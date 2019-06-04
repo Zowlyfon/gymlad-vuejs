@@ -1,16 +1,17 @@
 <template>
     <div id='workout'>
-        <Workout></Workout>
+        <h2>Workout Builder</h2>
+        <WorkoutBuilder></WorkoutBuilder>
     </div>
 </template>
 
 <script>
-import Workout from '@/components/Workout.vue'
+import WorkoutBuilder from '@/components/WorkoutBuilder.vue'
 
 export default {
     name: 'workout',
     components: {
-        Workout
+        WorkoutBuilder
     }
 }
 </script>

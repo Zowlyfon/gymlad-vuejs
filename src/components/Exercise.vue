@@ -1,13 +1,15 @@
 <template>
     <div class="Exercise">
-        <b-input-group v-show="exists">
-            <b-form-input v-model="exercise.name" @change="onChange"></b-form-input> 
-            <b-input-group-append>
-                <b-button v-show="isNew" @click="postExercise">Add</b-button> 
-                <b-button v-show="!isNew && changed" @click="putExercise">Update</b-button>
-                <b-button v-show="!isNew" @click="deleteExercise" variant="danger">Delete</b-button>
-            </b-input-group-append>
-        </b-input-group>
+        <b-list-group-item v-show="exists">
+            <b-input-group>
+                <b-form-input v-model="exercise.name" @change="onChange"></b-form-input> 
+                <b-input-group-append>
+                    <b-button v-show="isNew" @click="postExercise">Add</b-button> 
+                    <b-button v-show="!isNew && changed" @click="putExercise">Update</b-button>
+                    <b-button v-show="!isNew" @click="deleteExercise" variant="danger">Delete</b-button>
+                </b-input-group-append>
+            </b-input-group>
+        </b-list-group-item>
     </div>
 </template>
 

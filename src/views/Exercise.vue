@@ -1,9 +1,13 @@
 <template>
-  <div id="app">
-    <b-container>
-      <p><b-button @click="addWorkout">New Workout</b-button></p>
-      <b-list-group v-for="exercise in exercises" :key="exercise.id"><p><Exercise :exerciseId="exercise.id" :exerciseName="exercise.name"></Exercise></p></b-list-group>
-    </b-container>
+  <div class="exercise">
+    <h2>Exercises</h2>
+    <p><b-button @click="addExercise">New Exercise</b-button></p>
+    <b-list-group>
+      <Exercise v-for="exercise in exercises" 
+        :key="exercise.id" 
+        :exerciseId="exercise.id" 
+        :exerciseName="exercise.name"></Exercise>
+    </b-list-group>  
   </div>
 </template>
 
@@ -12,7 +16,7 @@ import Exercise from "@/components/Exercise.vue";
 import API from "@/mixins/API.vue";
 
 export default {
-  name: "app",
+  name: "exercise",
   data() {
     return {
       exercises: []
@@ -28,7 +32,7 @@ export default {
         .then(response => (this.exercises = response.data))
         .catch(error => (this.console.error(error)));
     },
-    addWorkout: function () {
+    addExercise: function () {
       this.exercises.push({id: 0, name: ""});
     }
   },

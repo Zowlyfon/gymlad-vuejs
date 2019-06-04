@@ -1,10 +1,19 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/exercises">Exercises</router-link> |
-      <router-link to="/workouts">Workouts</router-link>
-    </div>
-    <router-view/>
+    <b-container fluid>
+      <b-row align-v="start">
+      <b-col sm=2>
+        <h1>GymLad</h1>
+        <div id="nav">
+          <router-link to="/exercises">Exercises</router-link> |
+          <router-link to="/workouts">Workouts</router-link>
+        </div>
+      </b-col>
+      <b-col sm="10">
+        <router-view/>
+      </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
