@@ -12,34 +12,11 @@
         <h3>{{exercise.text}}</h3>
         <b-list-group>
             <b-list-group-item v-for="set in filteredSets(exercise.value)" :key="set.id">
-                <b-row align-v="center">
-                    <b-col sm=1>
-                        {{ set.exerciseId }}
-                    </b-col>
-                    <b-col sm=1>
-                        Reps:
-                    </b-col>
-                    <b-col sm=1>
-                        <b-form-input v-model="set.reps" 
-                                      @change="setChange(set)"
-                                      type="number"></b-form-input> 
-                    </b-col>
-                    <b-col sm=1>
-                        Weight:
-                    </b-col>
-                    <b-col sm=1>
-                        <b-form-input v-model="set.weight"
-                                      @change="setChange(set)"
-                                      type="number"></b-form-input>
-                    </b-col>
-                    <b-col sm=1 v-show="set.changed">
-                        <b-button @click="putSet(set)">Update</b-button>
-                    </b-col>
-                    <b-col sm=1>
-                        <b-button @click="deleteSet(set)" 
-                                  variant="danger">Delete</b-button>
-                    </b-col>
-                </b-row>
+                <Set :set="set" 
+                     @update-reps="onRepsChange(set, $event)" 
+                     @update-weight="onWeightChange(set, $event)"
+                     @update-set="putSet(set)"
+                     @delete-set="deleteSet(set)"></Set>
             </b-list-group-item>
         </b-list-group>
         </div>
@@ -49,30 +26,27 @@
 
 <script>
 import API from '@/mixins/API.vue'
-//import Set from '@/components/Set.vue'
+import Set from '@/components/Set.vue'
 
 export default {
     name: 'WorkoutBuilder',
     mixins: [API],
     components: {
-        //Set
+        Set
     },
     data() {
         return {
-            workout: {
-                id: null,
-                personId: 1,
-                time: null
-            },
             sets: [],
             exercises: [{id: 0, name: "No Exercises Found"}],
             selectedExerciseId: 1
         }
     },
     props: {
-        workoutId: Number,
-        workoutPersonId: Number,
-        workoutTime: Date
+        workout: {
+            id: Number,
+            personId: Number,
+            time: Date
+        }
     },
     computed: {
     },
@@ -80,6 +54,11 @@ export default {
         getExercises() {
             this.api.get('/exercise')
                 .then(response => (this.exercises = response.data.map(exercise => ({value: exercise.id, text: exercise.name}))))
+                .catch(error => (this.console.error(error)));
+        },
+        getSets() {
+            this.api.get('/workout/sets/' + this.workout.id)
+                .then(response => (this.sets = response.data))
                 .catch(error => (this.console.error(error)));
         },
         addSet() {
@@ -95,12 +74,17 @@ export default {
             this.sets.push(set);
             
         },
-        setChange(set) {
+        onRepsChange: function(set, event) {
             set.changed = true;
+            set.reps = parseInt(event);
+        },
+        onWeightChange: function(set, event) {
+            set.changed = true;
+            set.weight = parseFloat(event);
         },
         postSet: function(set) {
             this.api.post('/set', {
-                exerciseId: set.id,
+                exerciseId: set.exerciseId,
                 workoutId: set.workoutId,
                 reps: set.reps,
                 weight: set.weight
@@ -110,12 +94,13 @@ export default {
         },
         putSet: function(set) {
             this.api.put('/set/' + set.id, {
-                exerciseId: set.id,
+                id: set.id,
+                exerciseId: set.exerciseId,
                 workoutId: set.workoutId,
                 reps: set.reps,
                 weight: set.weight
             })
-            .then(set.changed = false)
+            .then(() => (set.changed = false))
             .catch(error => (this.console.error(error)));
         },
         deleteSet: function(set) {
@@ -129,6 +114,7 @@ export default {
     },
     created () {
         this.getExercises();
+        this.getSets();
     }
 }
 </script>
