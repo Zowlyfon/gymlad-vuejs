@@ -1,14 +1,23 @@
 <template>
     <div id="WorkoutBuilder">
         <b-row>
+            <b-col sm=1>
+                <b-button @click="$emit('close-builder')" variant="danger">Close</b-button> 
+            </b-col>
+            <b-col sm=2>
+                <b-button @click="putAllChangedSets">Update All</b-button>
+            </b-col>
             <b-col sm=3>
-                <b-button @click="addSet">Add Set</b-button>
+                <b-button @click="addSet" variant="success">Add Set</b-button>
             </b-col>
             <b-col sm=3>
                 <b-form-select v-model="selectedExerciseId" :options="exercises"></b-form-select>
             </b-col>
         </b-row>
-        <div v-for="exercise in exercises" :key="exercise.value" v-show="filteredSets(exercise.value).length > 0">
+        <p></p>
+        <b-row v-for="exercise in exercises" :key="exercise.value" v-show="filteredSets(exercise.value).length > 0">
+        <b-col>
+        <p></p>
         <h3>{{exercise.text}}</h3>
         <b-list-group>
             <b-list-group-item v-for="set in filteredSets(exercise.value)" :key="set.id">
@@ -19,7 +28,8 @@
                      @delete-set="deleteSet(set)"></Set>
             </b-list-group-item>
         </b-list-group>
-        </div>
+        </b-col>
+        </b-row>
              
     </div>
 </template>
@@ -81,6 +91,13 @@ export default {
         onWeightChange: function(set, event) {
             set.changed = true;
             set.weight = parseFloat(event);
+        },
+        putAllChangedSets: function() {
+            this.sets.forEach(set => {
+                if (set.changed) {
+                    this.putSet(set);
+                }
+            });
         },
         postSet: function(set) {
             this.api.post('/set', {

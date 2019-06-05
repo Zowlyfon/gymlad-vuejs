@@ -3,7 +3,7 @@
         <h2>Workouts</h2>
         <b-row>
             <b-col sm=2>
-                <b-button @click="postWorkout">New Workout</b-button>
+                <b-button @click="postWorkout" variant="success">New Workout</b-button>
             </b-col>
             <b-col sm=2>
                 <b-form-input v-model="selectedDate" type="date"></b-form-input>
@@ -23,7 +23,7 @@
                             <b-col sm="3">
                                 <h4>{{workout.time}}</h4>
                             </b-col>
-                            <b-col sm="1">
+                            <b-col v-show="!builders.includes(workout)" sm="1">
                                 <b-button @click="editWorkout(workout)">Edit</b-button>
                             </b-col>
                             <b-col sm="1">
@@ -34,7 +34,8 @@
                     </b-list-group>
                 </b-tab>
                 <b-tab v-for="builder in builders" :key="builder.id" :title="builder.time">
-                    <WorkoutBuilder :workout="builder"></WorkoutBuilder>
+                    <p></p>
+                    <WorkoutBuilder @close-builder="closeBuilder(builder)" :workout="builder"></WorkoutBuilder>
                 </b-tab>
             </b-tabs>
             </b-col>
@@ -70,6 +71,9 @@ export default {
     methods: {
         editWorkout: function(workout) {
             this.builders.push(workout);
+        },
+        closeBuilder: function(builder) {
+            this.builders.splice(this.builders.indexOf(builder),1);
         },
         getWorkouts: function() {
             this.api.get('/workout')

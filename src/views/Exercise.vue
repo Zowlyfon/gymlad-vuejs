@@ -1,7 +1,7 @@
 <template>
   <div class="exercise">
     <h2>Exercises</h2>
-    <p><b-button @click="addExercise">New Exercise</b-button></p>
+    <p><b-button @click="addExercise" variant="success">New Exercise</b-button></p>
     <b-list-group>
       <Exercise v-for="exercise in exercises" 
         :key="exercise.id" 
