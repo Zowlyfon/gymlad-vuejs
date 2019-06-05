@@ -58,7 +58,7 @@ export default {
         },
         getSets() {
             this.api.get('/workout/sets/' + this.workout.id)
-                .then(response => (this.sets = response.data))
+                .then(response => (this.sets = response.data.map(set => ({id: set.id, exerciseId: set.exerciseId, workoutId: set.workoutId, reps: set.reps, weight: set.weight, changed: false}))))
                 .catch(error => (this.console.error(error)));
         },
         addSet() {
